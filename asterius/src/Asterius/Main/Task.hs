@@ -22,6 +22,7 @@ module Asterius.Main.Task
     verboseErr,
     yolo,
     consoleHistory,
+    poolSize,
     extraGHCFlags,
     exportFunctions,
     extraRootSymbols,
@@ -52,6 +53,7 @@ data Task
         outputDirectory :: FilePath,
         outputBaseName :: String,
         hasMain, tailCalls, gcSections, bundle, debug, outputIR, run, verboseErr, yolo, consoleHistory :: Bool,
+        poolSize :: Int,
         extraGHCFlags :: [String],
         exportFunctions, extraRootSymbols :: [EntitySymbol],
         gcThreshold :: Int
@@ -77,6 +79,7 @@ defTask = Task
     verboseErr = False,
     yolo = False,
     consoleHistory = False,
+    poolSize = 1,
     extraGHCFlags = [],
     exportFunctions = [],
     extraRootSymbols = [],
