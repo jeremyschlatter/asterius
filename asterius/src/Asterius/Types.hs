@@ -449,9 +449,29 @@ data Function
       }
   deriving (Show, Data)
 
+-- | An Asterius function import. Notice that once can import the same
+-- JavaScript function multiple times, assigning it different internal names
+-- and/or different types. Examples of usage can be found in the
+-- @Asterius.Builtins.*@ family of modules.
 data FunctionImport
   = FunctionImport
-      { internalName, externalModuleName, externalBaseName :: BS.ByteString,
+      { -- | The name the imported function has in the Wasm world. By
+        -- convention, this usually takes the form
+        -- @"__asterius_" <> externalModuleName <> "_" <> externalBaseName@
+        -- (e.g. @"__asterius_Memory_memcpy"@).
+        internalName :: BS.ByteString,
+        -- | The name of the external module. This refers to the name
+        -- (namespace) the module has in the "import object" (see
+        -- @importObject@ in @rts.mjs@). (e.g. posix, or Memory).
+        externalModuleName :: BS.ByteString,
+        -- | The actual JavaScript name of the imported function, as specified
+        -- in the (external) JavaScript module
+        -- (e.g. @memcpy@ in @rts.memory.mjs@).
+        externalBaseName :: BS.ByteString,
+        -- | The function type in the Wasm world. Even if the JavaScript
+        -- function returns something, one can set the return type to @[]@ if
+        -- desired; the engine will safely ignore the return value in this
+        -- case.
         functionType :: FunctionType
       }
   deriving (Show, Data)

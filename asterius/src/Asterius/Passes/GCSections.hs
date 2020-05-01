@@ -14,6 +14,11 @@ import qualified Asterius.Types.SymbolMap as SM
 import qualified Asterius.Types.SymbolSet as SS
 import Data.String
 
+-- | Eliminate all dead (unreachable from the root symbols and/or the exported
+-- functions) code from an 'AsteriusCachedModule'. The result is a plain
+-- 'AsteriusModule': the dependency map that is contained in the input is only
+-- useful for this pass; after 'gcSections' is called, 'dependencyMap' serves
+-- no function.
 gcSections ::
   Bool ->
   AsteriusCachedModule ->

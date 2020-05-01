@@ -8,6 +8,12 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wno-overflowed-literals #-}
 
+-- |
+-- Module      :  Asterius.CodeGen
+-- Copyright   :  (c) 2018 EURL Tweag
+-- License     :  All rights reserved (see LICENCE file in the distribution).
+--
+-- Elaboration of Cmm into the Asterius's AST ("Asterius.Types").
 module Asterius.CodeGen
   ( CodeGen,
     runCodeGen,

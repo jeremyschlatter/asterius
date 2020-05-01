@@ -250,6 +250,11 @@ export class Memory {
     this.liveBitset &= ~(mask(n) << mblock_no);
   }
 
+  /**
+   * View the memory segment starting from (virtual, 64-bit address) {@param p}
+   * as an array containing {@param len} elements of type {@param t} (usage
+   * example: this.expose(_dst, n, Float32Array)).
+   */
   expose(p, len, t) {
     return new t(this.memory.buffer, Memory.unTag(p), len);
   }
@@ -291,8 +296,15 @@ export class Memory {
     return this.memcpy(_dst, _src, n);
   }
 
+  /**
+   * Set {@param n} elements starting from (the virtual 64-bit pointer) {@param
+   * _dst} to value {@param c}.  The last parameter ({@param size}) is the size
+   * (in bytes) of {@param c}, and can only be 1, 2, 4, or 8; other sizes
+   * should give a runtime error.  NOTE: Even if {@param _dst} is a pointer to
+   * a byte array, {@param n} refers to number of elements, NOT number of
+   * bytes.
+   */
   memset(_dst, c, n, size = 1) {
-    // We only allow 1, 2, 4, 8. Any other size should get a runtime error.
     const ty = {
       1 : Uint8Array,
       2 : Uint16Array,
@@ -305,7 +317,7 @@ export class Memory {
       // TODO: The conversion BigInt(c) is lossy. Numbers are represented as
       // IEEE754 double precision floating point numbers, for which the maximum
       // (representable) safe integer in JavaScript is (Number.MAX_SAFE_INTEGER
-      // = 2^53 - 1).
+      // = 2^53 - 1). For more, see Issue #557.
       buf.fill(BigInt(c));
     } else {
       buf.fill(c);

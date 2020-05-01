@@ -41,14 +41,15 @@ mkImport ext_mod_name ext_base_name fn_type =
 -- -------------------------------------------------------------------------
 
 -- GEORGE: Note that Asterius uses 64 bits everywhere, but WebAssembly at the
--- moment does not support I64. Yet, it DOES support F64. Hence, we convert
--- everything to F64 in all the signatures. It would be nice to remove this
--- hack eventually, but that I guess is not in our hands at the moment.
+-- moment does not support I64. Yet, it DOES support F64. Hence, we convert all
+-- integral types to F64 in all the signatures (floating-point types correspond
+-- to themselves instead). It would be nice to remove this hack eventually, but
+-- that I guess is not in our hands at the moment.
 
 -- | Wasm import of the JavaScript implementation of @memcpy@, @memmove@,
 -- @memset@, and @memcmp@ (see implementations in rts/rts.memory.mjs). Notice
--- that for some of them we ignore their result type; the hsprimitive_*
--- functions do not use them.
+-- that for some of them we ignore their result type, setting 'returnTypes' to
+-- @[]@; the hsprimitive_* functions do not use them.
 primitiveImports :: [FunctionImport]
 primitiveImports =
   [ mkImport "Memory" "memcpy" $

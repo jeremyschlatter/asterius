@@ -150,7 +150,9 @@ linkStart debug gc_sections verbose_err store root_syms export_funcs =
         debug
         bundled_ffi_state
         merged_m
-        -- reserve 0 for the null function pointer
+        -- Reserve 0 for the null function pointer (this is used for example to
+        -- indicate that stgRun has run to completion).
         (1 .|. functionTag `shiftL` 32)
-        -- leave 1KB empty for the --low-memory-unused optimization to work
+        -- Leave 1KB (0x400 = 1024) empty for binaryen's --low-memory-unused
+        -- optimization to work (see Issue #331).
         (0x00000400 .|. dataTag `shiftL` 32)
